@@ -1,5 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react'
-import './App.css';
+import React, {useEffect, useState} from 'react'
 import Papa from 'papaparse';
 import {Virtuoso} from 'react-virtuoso';
 import {List, ListItem} from "@material-ui/core";
@@ -7,6 +6,8 @@ import {List, ListItem} from "@material-ui/core";
 const App: React.FC = () => {
     const preloadCount = 100;
     const [isLoading, setLoading] = useState(false);
+    const [typesMap, setTypesMap] = useState([] as string[]);
+    const [departmentMap, setDepartmentMap] = useState([] as string[]);
     const [items, setItems] = useState([] as any[]);
     const [endReached, setEndReached] = useState(false);
     const [loadedCount, setLoadedCount] = useState(preloadCount);
@@ -23,16 +24,17 @@ const App: React.FC = () => {
         Papa.parse('https://fop-check.s3.eu-central-1.amazonaws.com/map_type.csv', {
             ...configPapaparse,
             complete: function (results_types, _) {
-                console.warn("Item:", results_types.data[0]);
+                let types = results_types.data.flatMap(it => Object.keys(it).map(key => it[key]));
+                setTypesMap(types);
                 Papa.parse('https://fop-check.s3.eu-central-1.amazonaws.com/map_map_department.csv', {
                     ...configPapaparse,
                     complete: function (results_department, _) {
-                        console.warn("Item:", results_department.data[0]);
+                        let departments = results_department.data.flatMap(it => Object.keys(it).map(key => it[key]));
+                        setDepartmentMap(departments);
                         Papa.parse('https://fop-check.s3.eu-central-1.amazonaws.com/db.csv', {
                             ...configPapaparse,
                             complete: function (results, _) {
                                 setLoading(false);
-                                console.warn("Item:", results.data[0]);
                                 setItems(results.data);
                             }
                         });
@@ -43,10 +45,6 @@ const App: React.FC = () => {
     };
 
     useEffect(loadData, []);
-
-    const renderItem = (index: React.ReactNode) => {
-        return <div>Item {index}</div>;
-    };
 
     const loadMore = () => {
         if (!endReached) {
@@ -78,8 +76,29 @@ const App: React.FC = () => {
         )
     }
 
+    const renderItem = (index: number) => {
+        if (!items.length || !departmentMap.length || !typesMap.length) {
+            return <div/>;
+        }
+        if (items[index] === undefined || !items[index].hasOwnProperty('address')) {
+            console.warn('hasOwnProperty', index);
+            return <div/>;
+        }
+        const address = items[index]['address'];
+        const code = items[index]['code'];
+        const date = items[index]['date'];
+        const department_id = Number(items[index]['department_id']);
+        const department = departmentMap[department_id];
+        const duration = items[index]['duration'];
+        const name = items[index]['name'];
+        const risk = items[index]['risk'];
+        const type_id = Number(items[index]['type_id']);
+        const type = typesMap[type_id];
+        return <p>{[address, code, date, department, duration, name, risk, type]}</p>;
+    };
+
     return (
-        <div className="App">
+        <>
             {isLoading && <p>Loading...</p>}
             {items.length > 0 && <p>{items.length} items loaded</p>}
             <Virtuoso
@@ -94,7 +113,7 @@ const App: React.FC = () => {
                 endReached={loadMore}
                 overscan={preloadCount}
             />
-        </div>
+        </>
     );
 };
 
