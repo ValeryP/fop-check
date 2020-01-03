@@ -10,13 +10,17 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableContainer,
+    TableFooter,
     TableHead,
+    TablePagination,
     TableRow,
     Theme
 } from "@material-ui/core";
 import {grey} from '@material-ui/core/colors';
 import stringSimilarity from 'string-similarity'
 import InputText from "./InputText";
+import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,6 +48,8 @@ const App: React.FC = () => {
     const [filterParam, setFilterParam] = useState('');
     const [isLoading, setLoading] = useState(false);
     const [items, setItems] = useState([] as any[]);
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
     function parseItem(index: number, item: any, departments: any[], types: any[]) {
         let type = String(types[Number(item['type_id'])]);
@@ -117,6 +123,16 @@ const App: React.FC = () => {
             item['index'] = index + 1;
             return item;
         });
+
+    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
     return (
         <>
             <Grid container style={{textAlign: 'center'}}>
@@ -126,8 +142,9 @@ const App: React.FC = () => {
             </Grid>
             {
                 Boolean(filteredItems.length) &&
-                <Paper className={classes.paper}>
-                    <Table className={classes.table} size="small" aria-label="table">
+                <TableContainer component={Paper} className={classes.paper}>
+                    <Table stickyHeader className={classes.table} size="small"
+                           aria-label="custom pagination table">
                         <TableHead>
                             <TableRow style={{background: grey[100]}}>
                                 {columnNames.map((column, indexColumn) =>
@@ -140,28 +157,44 @@ const App: React.FC = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {filteredItems.map((row, indexRow) => (
-                                <TableRow key={indexRow}>
-                                    {columnNames.map((column, indexColumn) =>
-                                        <TableCell style={{verticalAlign: 'top'}}
-                                                   key={indexColumn}>
-                                            {
-                                                ['name', 'address', 'code'].includes(column)
-                                                    ? <Highlighter
-                                                        searchWords={searchDomains}
-                                                        autoEscape={true}
-                                                        highlightStyle={{fontWeight: 'bold'}}
-                                                        textToHighlight={row[column].toString()}
-                                                    />
-                                                    : row[column]
-                                            }
+                            {filteredItems
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, indexRow) => (
+                                    <TableRow key={indexRow}>
+                                        {columnNames.map((column, indexColumn) =>
+                                            <TableCell style={{verticalAlign: 'top'}}
+                                                       key={indexColumn}>
+                                                {
+                                                    ['name', 'address', 'code'].includes(column)
+                                                        ? <Highlighter
+                                                            searchWords={searchDomains}
+                                                            autoEscape={true}
+                                                            highlightStyle={{fontWeight: 'bold'}}
+                                                            textToHighlight={row[column].toString()}
+                                                        />
+                                                        : row[column]
+                                                }
 
-                                        </TableCell>)}
-                                </TableRow>
-                            ))}
+                                            </TableCell>)}
+                                    </TableRow>
+                                ))}
                         </TableBody>
+                        <TableFooter style={{marginRight: 16}}>
+                            <TableRow>
+                                <TablePagination
+                                    labelRowsPerPage={'Відображати результатів на сторінці:'}
+                                    rowsPerPageOptions={[50, 100, 250]}
+                                    count={filteredItems.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onChangePage={handleChangePage}
+                                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                                    ActionsComponent={TablePaginationActions}
+                                />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
-                </Paper>
+                </TableContainer>
             }
         </>
     );

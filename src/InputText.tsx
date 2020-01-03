@@ -18,12 +18,14 @@ export default function InputText({updateResultsCallback}) {
     }, [text]);
 
     const onChangeText = (event: ChangeEvent<HTMLInputElement>) => {
-        event.persist();
-        return new Promise((resolve, reject) => {
-            resolve(event.target.value);
-        }).then(v => {
-            setText(v as string);
-        });
+        if (event.target.value.length > 3) {
+            event.persist();
+            return new Promise((resolve, _) => {
+                resolve(event.target.value);
+            }).then(v => {
+                setText(v as string);
+            });
+        }
     };
     return (
         <TextField style={{minWidth: 500, marginTop: 32}}
