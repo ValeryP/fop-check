@@ -1,20 +1,3 @@
-// Variables
-$bar-color: #d81b60;
-$ball-color: #d81b60;
-$bg-color: #fff;
-
-html {
-  height: 100%;
-}
-
-body {
-  height: 100%;
-  background: $bg-color;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .loader {
   position: relative;
   width: 75px;
@@ -25,7 +8,7 @@ body {
     bottom: 0;
     width: 10px;
     height: 50%;
-    background: $bar-color;
+    background: #d81b60;
     transform-origin: center bottom;
     box-shadow: 1px 1px 0 rgba(0, 0, 0, .2);
 
@@ -45,7 +28,7 @@ body {
     left: 0;
     width: 10px;
     height: 10px;
-    background: $ball-color;
+    background: #d81b60;
     border-radius: 50%;
     animation: ball 4s infinite;
   }

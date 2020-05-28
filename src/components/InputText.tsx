@@ -1,12 +1,11 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
-import './App.scss';
 import {TextField} from "@material-ui/core";
 
 // @ts-ignore
 export default function InputText({updateResultsCallback}) {
     const [text, setText] = useState('');
 
-    const [timer, setTimer] = useState<NodeJS.Timer | undefined>();
+    const [timer, setTimer] = useState<NodeJS.Timer>();
     useEffect(() => {
         if (timer) {
             clearTimeout(timer);
