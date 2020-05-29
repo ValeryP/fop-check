@@ -100,8 +100,7 @@ export default function FopTable({domains, items}: { domains: string[], items: a
                aria-label="custom pagination table">
             <TableHead>
                 <TableRow style={{background: grey[100]}}>
-                    {columnNames
-                        .map((column, indexColumn) => buildTableCell(indexColumn, column))}
+                    {columnNames.map((column, indexColumn) => buildTableCell(indexColumn, column))}
                 </TableRow>
             </TableHead>
             <TableBody>

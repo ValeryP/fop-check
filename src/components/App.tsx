@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {Grid} from "@material-ui/core";
 import stringSimilarity from 'string-similarity'
 import InputText from "./InputText";
-import Loading from "./Loading";
+import Loading from "./loading/Loading";
 import {TableItem} from "../model/TableItem";
 import {loadData} from "../network/Api";
 import FopTable from "./Table";
+import EmptyState from "./empty_state/EmptyState";
 
 const App: React.FC = () => {
     const [filterParam, setFilterParam] = useState('');
@@ -34,18 +35,27 @@ const App: React.FC = () => {
             return item;
         });
 
+    const isEmptyState = filteredItems.length === 0 && items.length !== 0
+    const isInitialState = filterParam.length === 0
 
-    return isLoading
-        ? <Loading/>
-        : <Grid container style={{textAlign: 'center'}} justify={"center"} alignContent={"center"}>
-            <Grid item xs={12}>
-                <InputText updateResultsCallback={setFilterParam}/>
-            </Grid>
-            <Grid item xs={12}>
-                {filteredItems.length > 0 &&
-                <FopTable domains={searchDomains} items={filteredItems}/>}
-            </Grid>
-        </Grid>;
+    return <Grid container justify={"center"} alignContent={"center"} style={{height: '100vh'}}>
+        {
+            isLoading
+                ? <Grid item><Loading/></Grid>
+                : <Grid item container>
+                    <Grid item xs style={{textAlign: "center"}}>
+                        <InputText updateResultsCallback={setFilterParam}/>
+                    </Grid>
+                    <Grid item xs={12} style={{height: '90vh'}}>
+                        {
+                            filteredItems.length > 0
+                                ? <FopTable domains={searchDomains} items={filteredItems}/>
+                                : <EmptyState/>
+                        }
+                    </Grid>
+                </Grid>
+        }
+    </Grid>;
 };
 
 export default App;
