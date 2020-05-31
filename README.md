@@ -7,9 +7,17 @@ documents and business activity. They are unexpected for the business and could 
 The website allows the business owners to check the date and the topic of the inspection to prepare 
 for the inspection in advance and proceed smoothly.
 
+- 🏗 [Architecture](#architecture)
 - 🚀 [Quick start](#-quick-start)
 - 🔗 [Data source](#-data-source)
 - ✉️ [Feedback](https://t.me/p_val)
+
+### Architecture
+
+- `notebook` - data cleaning and preparation (merging [~20 data sources](https://inspections.gov.ua/regulators-plans/index?planning_period_id=4&page=1) into single DB)
+- the cleaned data merged into single `db.csv` stored into [AWS S3](https://aws.amazon.com/s3) bucket
+- `src` - react JS app with async downloading and parsing `db.csv` using [`papaparse`](https://www.papaparse.com/)
+- [Material UI](https://material-ui.com/) is the visual framework used for web app development
 
 ## 🚀 Quick start
 
