@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Grid} from "@material-ui/core";
+import {Grid, Typography} from "@material-ui/core";
 import stringSimilarity from 'string-similarity'
 import InputText from "./InputText";
 import Loading from "./loading/Loading";
@@ -39,6 +39,17 @@ const App: React.FC = () => {
             isLoading
                 ? <Grid item xs={12}><Loading/></Grid>
                 : <>
+                    {
+                        filterParam.length === 0 &&
+                        <Grid item>
+                            <Typography variant={"h4"}>
+                                Перевірки підприємств держорганами
+                            </Typography>
+                            <Typography variant={"h3"} color={"textSecondary"} align={"center"}>
+                                2020
+                            </Typography>
+                        </Grid>
+                    }
                     <Grid item xs={12} style={{textAlign: "center"}}>
                         <InputText updateResultsCallback={setFilterParam}/>
                     </Grid>
