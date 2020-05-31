@@ -18,19 +18,9 @@ import TablePaginationActions from "@material-ui/core/TablePagination/TablePagin
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
-            width: '100%',
-        },
         paper: {
-            overflowX: 'auto',
-            marginTop: theme.spacing(3),
-            marginRight: theme.spacing(1),
-            marginBottom: theme.spacing(1),
-            marginLeft: theme.spacing(1)
-        },
-        table: {
-            minWidth: 650,
-        },
+            height: '80vh'
+        }
     }),
 );
 
@@ -96,8 +86,7 @@ export default function FopTable({domains, items}: { domains: string[], items: a
     }
 
     return <TableContainer className={classes.paper}>
-        <Table stickyHeader className={classes.table} size="small"
-               aria-label="custom pagination table">
+        <Table stickyHeader size="small" aria-label="custom pagination table">
             <TableHead>
                 <TableRow style={{background: grey[100]}}>
                     {columnNames.map((column, indexColumn) => buildTableCell(indexColumn, column))}
@@ -108,7 +97,7 @@ export default function FopTable({domains, items}: { domains: string[], items: a
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, indexRow) => buildRowItem(indexRow, row))}
             </TableBody>
-            <TableFooter style={{marginRight: 16}}>
+            <TableFooter>
                 <TableRow>
                     <TablePagination
                         labelRowsPerPage={'Відображати результатів на сторінці:'}

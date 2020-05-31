@@ -6,7 +6,6 @@ import Loading from "./loading/Loading";
 import {TableItem} from "../model/TableItem";
 import {loadData} from "../network/Api";
 import FopTable from "./Table";
-import EmptyState from "./empty_state/EmptyState";
 
 const App: React.FC = () => {
     const [filterParam, setFilterParam] = useState('');
@@ -21,7 +20,7 @@ const App: React.FC = () => {
         })
     }, []);
 
-    const searchDomains = filterParam.trim().toLowerCase().split(/(?:,| )+/).map(it => it.toString().trim()).filter(it => it);
+    const searchDomains = filterParam.trim().toLowerCase().split(/[, ]+/).map(it => it.toString().trim()).filter(it => it);
 
     const filteredItems = items
         .filter(item => searchDomains.map(domain => `${item['name']} ${item['address']} ${item['code']}`.toLowerCase().indexOf(domain) !== -1).some(it => it))
@@ -35,25 +34,21 @@ const App: React.FC = () => {
             return item;
         });
 
-    const isEmptyState = filteredItems.length === 0 && items.length !== 0
-    const isInitialState = filterParam.length === 0
-
     return <Grid container justify={"center"} alignContent={"center"} style={{height: '100vh'}}>
         {
             isLoading
-                ? <Grid item><Loading/></Grid>
-                : <Grid item container>
-                    <Grid item xs style={{textAlign: "center"}}>
+                ? <Grid item xs={12}><Loading/></Grid>
+                : <>
+                    <Grid item xs={12} style={{textAlign: "center"}}>
                         <InputText updateResultsCallback={setFilterParam}/>
                     </Grid>
-                    <Grid item xs={12} style={{height: '90vh'}}>
+                    <Grid item xs={12}>
                         {
-                            filteredItems.length > 0
-                                ? <FopTable domains={searchDomains} items={filteredItems}/>
-                                : <EmptyState/>
+                            filterParam.length !== 0 &&
+                            <FopTable domains={searchDomains} items={filteredItems}/>
                         }
                     </Grid>
-                </Grid>
+                </>
         }
     </Grid>;
 };

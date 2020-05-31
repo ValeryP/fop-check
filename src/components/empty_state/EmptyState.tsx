@@ -7,7 +7,7 @@ export default function EmptyState() {
     return <Box className="video-background">
         <Box className="video-foreground">
             <YouTube
-                videoId={"ZuuVjuLNvFY"}
+                videoId={"2al9nnqFlBQ"}
                 opts={{
                     playerVars: {
                         autoplay: 1,
