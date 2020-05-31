@@ -14,7 +14,7 @@ export const loadData = (onDataLoaded: (list: TableItem[]) => void) => {
                 complete: function (results_department, _) {
                     let departments = results_department.data.flatMap(it => Object.keys(it).map(key => it[key]));
                     // setDepartmentMap(departments);
-                    Papa.parse('https://fop-check.s3.eu-central-1.amazonaws.com/db.csv', {
+                    Papa.parse('https://fop-check.s3.eu-central-1.amazonaws.com/db2020.csv', {
                         ...configPapaparse,
                         complete: function (results, _) {
                             onDataLoaded(results.data.map((item, index) => parseItem(index + 1, item, departments, types)));
