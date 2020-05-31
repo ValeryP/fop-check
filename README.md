@@ -1,28 +1,36 @@
-<h1 align="center">Shows companies selected for tax inspection (🇺🇦UA only)</h1>
+<h1 align="center">Checker for company government inspections (🇺🇦UA)</h1>
 
 <img src="https://github.com/ValeryP/fop-check/blob/dev/img/fop-check-empty-state.gif" width="100%">
 
 Every year the Ukrainian government selects thousands of private companies to inspect their 
-business/documents. These inspections require preparation to proceed smoothly but mostly they are 
-unexpected for the business. The website allows the business owners to check if their business will 
-be checked, the date and the topic of the inspection. 
+documents and business activity. They are unexpected for the business and could lead to high fines. 
+The website allows the business owners to check the date and the topic of the inspection to prepare 
+for the inspection in advance and proceed smoothly.
 
+- 🏗 [Architecture](#-architecture)
 - 🚀 [Quick start](#-quick-start)
-- 🚀 [Data source](#-data-source)
+- 🔗 [Data source](#-data-source)
 - ✉️ [Feedback](https://t.me/p_val)
+
+### 🏗 Architecture
+
+- `notebook` - data cleaning and preparation (merging [~20 data sources](https://inspections.gov.ua/regulators-plans/index?planning_period_id=4&page=1) into single DB)
+- the cleaned data merged into single `db.csv` stored into [AWS S3](https://aws.amazon.com/s3) bucket
+- `src` - react JS app with async downloading and parsing `db.csv` using [`papaparse`](https://www.papaparse.com/)
+- [Material UI](https://material-ui.com/) is the visual framework used for web app development
 
 ## 🚀 Quick start
 
 1. **Clone the project**
 
 ```shell script
-git clone https://github.com/ValeryP/coronavirus-spread.git
+git clone https://github.com/ValeryP/fop-check.git
 ```
 
 2. **Run the local website**
 
 ```shell script
-cd coronavirus-spread
+cd fop-check
 yarn install
 yarn start
 ```
@@ -33,6 +41,8 @@ Your site is now running at `http://localhost:3000`
 
 ## 🔗 Data source
 
-<img src="http://sfs.gov.ua/img/icons-sc0039a6983.png" width="100%">
-Державна фіскальна служба України
+<img src="https://github.com/ValeryP/fop-check/blob/dev/img/data%20source.jpeg"
+     alt="" style="float: left;" />
+
+[Державна фіскальна служба України](https://inspections.gov.ua/regulators-plans/index?planning_period_id=4&page=1)
 
