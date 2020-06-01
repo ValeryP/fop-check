@@ -16,8 +16,9 @@ for the inspection in advance and proceed smoothly.
 
 - `notebook` - data cleaning and preparation (merging [~20 data sources](https://inspections.gov.ua/regulators-plans/index?planning_period_id=4&page=1) into single DB)
 - the cleaned data merged into single `db.csv` stored into [AWS S3](https://aws.amazon.com/s3) bucket
-- `src` - react JS app with async downloading and parsing `db.csv` using [`papaparse`](https://www.papaparse.com/)
+- `src` - React JS app with async downloading and parsing `db.csv` using [`papaparse`](https://www.papaparse.com/)
 - [Material UI](https://material-ui.com/) is the visual framework used for web app development
+- Database of "Subscribe for updates" feature implemented by [Firestore](https://firebase.google.com/docs/firestore) using [Firebase JS SDK](https://github.com/firebase/firebase-js-sdk)
 
 ## 🚀 Quick start
 
