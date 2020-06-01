@@ -89,7 +89,7 @@ const App: React.FC = () => {
             <Grid item xs={12} style={{padding: 16}}>
                 <TextField error={emailInvalid} variant="outlined" disabled={showSnackbar}
                            label={emailInvalid ? "Помилка" : "Електронна пошта"}
-                           helperText={emailInvalid ? "Введена невірна адреса електронної пошта" : undefined}
+                           helperText={emailInvalid ? "Введена невірна адреса електронної пошти" : undefined}
                            placeholder="stepan.bender@gmail.com"
                            style={{minWidth: 300}} onChange={onEmailChange}
                 />
